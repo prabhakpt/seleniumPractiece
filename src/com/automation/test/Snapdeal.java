@@ -17,7 +17,7 @@ public class Snapdeal {
 	
 	@Before
 	public void createDriever(){
-		driver = events.createDriver("firefox");
+		driver = events.createDriver("chrome");
 	}
 	
 	@Test
@@ -27,12 +27,13 @@ public class Snapdeal {
 			Thread.sleep(2000);
 			driver.manage().window().maximize();
 			
-			WebElement element = driver.findElement(By.linkText("Computers, Office & Gaming"));
+			WebElement element = driver.findElement(By.xpath("//div[@id='leftNavNemu']/div/div/ul/li[3]/a/span"));
+			//WebElement element = driver.findElement(By.linkText("Computers, Office & Gaming"));
 			Actions action = new Actions(driver);
 			Actions hoverOnSnapdeal = action.moveToElement(element);
 			hoverOnSnapdeal.perform();
-			
-			WebElement childElement = driver.findElement(By.linkText("Storage"));
+			WebElement childElement = driver.findElement(By.xpath("//div[@id='leftNavNemu']/div/div/ul/li[3]/div/ul/li[3]/a/span"));
+			//WebElement childElement = driver.findElement(By.linkText("Storage"));
 			Actions hoverOnStorage = action.moveToElement(childElement);
 			hoverOnStorage.perform();
 			

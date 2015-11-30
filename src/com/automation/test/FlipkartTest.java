@@ -11,7 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import com.automation.utilities.BrowserEvents;
 
-public class FllipkartTest {
+public class FlipkartTest {
 	WebDriver driver;
 	
 	BrowserEvents driverUtilities = new BrowserEvents();
