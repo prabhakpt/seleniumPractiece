@@ -5,23 +5,28 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.automation.utilities.BrowserEvents;
+import com.excel.testing.ReadAndWriteToExcelUsingPOI;
 
 public class Snapdeal {
 	WebDriver driver;
 	BrowserEvents events = new BrowserEvents();
 	
+	String className = this.getClass().getSimpleName();
+	
 	@Before
 	public void createDriever(){
-		driver = events.createDriver("chrome");
+		driver = events.createDriver("firefox");
 	}
 	
 	@Test
 	public void snapdealFlow(){
+		boolean isTestSuccess = false;
 		try{
 			driver.get("http://www.snapdeal.com/");
 			Thread.sleep(2000);
@@ -38,7 +43,7 @@ public class Snapdeal {
 			hoverOnStorage.perform();
 			
 			driver.findElement(By.linkText("2 TB")).click();
-			Thread.sleep(3999);
+			Thread.sleep(5000);
 			/*// check is element present
 			events.waitForElementPresent(10000, "link", "Transcend H3P 2 TB External Hard Disk");*/
 			//scroll to the element
@@ -56,17 +61,17 @@ public class Snapdeal {
 			// checking for delivary address
 			driver.findElement(By.id("pincode-check")).sendKeys("560016");
 			driver.findElement(By.id("pincode-check-bttn")).click();
-			Thread.sleep(2000);
+			Thread.sleep(4000);
 			// clicking add to cart
 			driver.findElement(By.id("add-cart-button-id")).click();
-			Thread.sleep(2000);
+			Thread.sleep(4000);
 			
 			// checking for text exists in tag
 			//if(driver.findElement(By.tagName("body")).getText().contains("Item Available: Delivery"))
 			// closing cart default value
 			//driver.findElement(By.xpath("//div[@id='cartModal']/div[2]/div/div/div[2]/span/i")).click();
 			driver.findElement(By.xpath("//div[2]/div/div/div[2]/span/i")).click();
-
+			Thread.sleep(3000);
 			// verifying cart data
 			/*driver.findElement(By.id("cartHeader")).click();//
 			//String cartValue = driver.findElement(By.linkText("WD 2TB My Book Desktop Storage External Hard Drive")).getText();
@@ -80,7 +85,7 @@ public class Snapdeal {
 			
 			driver.findElement(By.id("buy-button-id")).click();
 			
-			Thread.sleep(2000);
+			Thread.sleep(4000);
 			
 			// registering in snapdeal
 			driver.findElement(By.id("username")).sendKeys(BrowserEvents.generateEmail());
@@ -105,13 +110,23 @@ public class Snapdeal {
 			Assert.assertTrue(driver.findElement(By.tagName("body")).getText().contains("Review Order"));
 			
 			Thread.sleep(3000);
+			isTestSuccess = true;
+			
+			
 		}catch(InterruptedException ex){
 			
 			ex.printStackTrace();
-		}catch(Exception ex){
+		}catch(NoSuchElementException elementEx ){
 			// static method access directly using class name
 			BrowserEvents.takeScreenShotOnfailure("element_not_found");
-			ex.printStackTrace();
+			String cause = elementEx.getCause().getMessage();
+			System.out.println("cause of exception:"+cause);
+		}
+		finally{
+			if(isTestSuccess)
+				ReadAndWriteToExcelUsingPOI.updateDataWithTestCaseResults(className, "success");
+			else
+				ReadAndWriteToExcelUsingPOI.updateDataWithTestCaseResults(className, "failed");
 		}
 	}
 	

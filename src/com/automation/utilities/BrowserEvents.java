@@ -24,7 +24,7 @@ public class BrowserEvents {
 
 	private static WebDriver driver;
 
-	public WebDriver createDriver(String driverName) {
+	public static WebDriver createDriver(String driverName) {
 		if (driverName.equals("firefox")) {
 			driver = new FirefoxDriver();
 			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -47,7 +47,7 @@ public class BrowserEvents {
 
 	}
 
-	public void closeDriver() {
+	public static void closeDriver() {
 		System.out.println("Closing Driver");
 		driver.quit();
 	}
@@ -81,18 +81,20 @@ public class BrowserEvents {
 	}
 
 	public static void waitForElementPresent(int maxWaitTime,
-			String identifyBy, String locator) throws InterruptedException {
+			String identifyBy, String locator) {
 
 		long totalWaitTime = 0;
-		// boolean isPresent = false;
-		
-		while (!isElementPresent(identifyBy, locator)) {
-			long time = 1000;
-			totalWaitTime = totalWaitTime + time;
-			Thread.sleep(1000);
-			if (totalWaitTime >= maxWaitTime) {
-				break;
+		try{
+			while (!isElementPresent(identifyBy, locator)) {
+				long time = 1000;
+				totalWaitTime = totalWaitTime + time;
+				Thread.sleep(1000);
+				if (totalWaitTime >= maxWaitTime) {
+					break;
+				}
 			}
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 	}
 	
@@ -167,6 +169,9 @@ public class BrowserEvents {
 
 	public static WebElement getWebElement(String identifyBy, String locator) {
 		WebElement webElement = null;
+		// wait for the element present
+		waitForElementPresent(1000, identifyBy, locator);
+		// once success execute..
 		if (identifyBy.equalsIgnoreCase("xpath")) {
 			webElement = driver.findElement(By.xpath(locator));
 		} else if (identifyBy.equalsIgnoreCase("id")) {
@@ -182,17 +187,6 @@ public class BrowserEvents {
 		}
 		return webElement;
 	}
-
-	/*
-	 * public static void waitForElementPresent(int maxWaitTime, String
-	 * identifyBy, String string) throws InterruptedException {
-	 * 
-	 * long totalWaitTime = 0; while (!isElementPresent(identifyBy, string)) {
-	 * long time = 1000; totalWaitTime = totalWaitTime + time;
-	 * Thread.sleep(1000); if (totalWaitTime >= maxWaitTime) { break; }
-	 * 
-	 * } }
-	 */
 
 	public static String getselectedLabel(String identifyBy, String locator)
 			throws InterruptedException {
@@ -304,15 +298,12 @@ public class BrowserEvents {
 
 	public static void mouseoverByWebElement(WebElement webElement)
 			throws InterruptedException {
-		// waitForElementPresent(10000,menu);
-		// WebElement webElement = driver.findElement(By.xpath(menu));// Menu
 
 		Actions builder = new Actions(driver);
 		Actions hoverOverRegistrar = builder.moveToElement(webElement);
 		hoverOverRegistrar.perform();
 
 		Thread.sleep(2000);
-
 	}
 
 	public static void mouseOverByIdentityTypeLocator(String identifyBy, String locator) throws InterruptedException {
@@ -347,11 +338,10 @@ public class BrowserEvents {
 		Actions hoverOverRegistrar = builder.moveToElement(mouseOverElement);
 		hoverOverRegistrar.perform();
 		mouseOverElement.click();
-		//Thread.sleep(2000);
-
 	}
 	
 	public static WebElement findElement(String identifyBy,String locator){
+		waitForElementPresent(10000, identifyBy, locator);
 		try{
 			if (identifyBy.equalsIgnoreCase("xpath")) {
 				return driver.findElement(By.xpath(locator));
@@ -394,15 +384,128 @@ public class BrowserEvents {
 			String text) {
 		try {
 			getWebElement(identifyBy, locator).sendKeys(text);
-			System.out.println("Entered text..");
 		} catch (Throwable e) {
 			takeScreenShotOnfailure("Textbox not found");// "+datetime("MMddhhmmss")
 			System.out.println(e.getMessage());
 			Assert.assertTrue(e.getMessage(), false);
 		}
 	}
+	
+	public static boolean isElementDispalyed(String identifyBy, String locator){
+		boolean isDisplayed = false;
+		waitForElementPresent(1000, identifyBy, locator);
+		WebElement element = getWebElement(identifyBy,locator);
+		if(element != null){
+			isDisplayed = element.isDisplayed();
+			System.out.println("is element displayed :"+isDisplayed);
+		}
+		return isDisplayed;
+	}
+	
+	public static void controlEvents(String identifyBy, String locator,String selectTag){
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		WebElement element = findElement(identifyBy, locator);
+		System.out.println("Ready to run contol function..");
+		element.sendKeys(Keys.chord(Keys.CONTROL, selectTag));
+		System.out.println("Done with control key function");
+	}
+
+	public static void controlMouseClick(String identifyBy,String locator){
+		System.out.println("finding the element for control enter");
+		WebElement element = findElement(identifyBy, locator);
+		System.out.println("got the element starting contl enter");
+		String keysPressed =  Keys.chord(Keys.CONTROL, Keys.RETURN);
+		   element.sendKeys(keysPressed) ;
+		   System.out.println("successfully entered..");
+	}
+	
+	public static void alertText(){
+		
+		System.out.println("Text in alert:"+driver.switchTo().alert().getText());
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void alertAccept(){
+			System.out.println("accepting the alert");
+			driver.switchTo().alert().accept();
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public static void alertReject(){
+			System.out.println("reject the alert");
+			driver.switchTo().alert().dismiss();
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public static void isRadioButtonSelected(String identifyBy,String locator) throws InterruptedException{
+		WebElement element = findElement(identifyBy, locator);
+		Thread.sleep(3000);
+		//input[@value='male']
+		System.out.println("is radio Button selected:"+element.isSelected());
+	}
+	
+	public static void selectRadioButton(String identifyBy,String locator) throws InterruptedException{
+		WebElement element = findElement(identifyBy, locator);
+		Thread.sleep(3000);
+		System.out.println("is radio Button selected:"+element.isSelected());
+		if(!element.isSelected()){
+			element.click();
+			
+		}
+		Thread.sleep(3000);
+	}
+	
+	public static void clickByLocator(String identifyBy, String locator){
+		WebElement element = findElement(identifyBy,locator);
+		try {
+				if(element != null)
+				element.click();
+				Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void loadUrl(String url){
+		driver.get(url);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		driver.manage().window().maximize();
+	}
+	
+	// created to check for text in body tag
+	public static boolean verifyForTagName(String tagName, String text){
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return driver.findElement(By.tagName(tagName)).getText().contains(text);
+	}
+	
 	public static void main(String[] args) {
-		generateEmail();
+		System.out.println("pra"+dataTime("MMddhhmmss"));
 	}
 
 }
