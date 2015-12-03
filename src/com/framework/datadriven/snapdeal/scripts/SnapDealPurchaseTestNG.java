@@ -1,32 +1,29 @@
 package com.framework.datadriven.snapdeal.scripts;
 
 import static com.automation.utilities.BrowserEvents.clickByLocator;
+import static com.automation.utilities.BrowserEvents.closeDriver;
 import static com.automation.utilities.BrowserEvents.createDriver;
 import static com.automation.utilities.BrowserEvents.enterText;
 import static com.automation.utilities.BrowserEvents.loadUrl;
 import static com.automation.utilities.BrowserEvents.mouseOverByIdentityTypeLocator;
 import static com.automation.utilities.BrowserEvents.takeScreenShotOnfailure;
 import static com.automation.utilities.BrowserEvents.verifyForTagName;
-import static com.automation.utilities.BrowserEvents.closeDriver;
 import static com.automation.utilities.XcelUtilities.getParamsObject;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.NoSuchElementException;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import com.excel.testing.ReadAndWriteToExcelUsingPOI;
 import com.framework.datadriven.snapdeal.pojo.SnapDealItem.BuyItem;
 
 @RunWith(Parameterized.class)
-public class SnapDealPurchase {
+public class SnapDealPurchaseTestNG {
 	
 	String className = this.getClass().getSimpleName();
 	
@@ -37,27 +34,33 @@ public class SnapDealPurchase {
 	static int i=0;
 	String result;
 	
-	public SnapDealPurchase(String email,String password, String confirmPassword,String mobileNumber,String result){
+	/*public SnapDealPurchaseTestNG(String email,String password, String confirmPassword,String mobileNumber,String result){
 		this.email = email;
 		this.password = password;
 		this.confirmPassword = confirmPassword;
 		this.mobileNumber = mobileNumber;
 		this.result = result;
-	}
+	}*/
 	
-	@Parameters
+	/*@Parameters
 	public static Collection<Object[]> getSnapdealData(){
 		return Arrays.asList(getParamsObject());
+	}*/
+	
+	@DataProvider(name="snapdealData")
+	public Object[][] createData(){
+		return getParamsObject();
 	}
 	
-	@Before
+	@BeforeMethod
 	public void createDriever(){
 		createDriver(BuyItem.BROWSER);
 	}
 	
-	@Test
-	public void snapdealFlow(){
+	@Test(dataProvider="snapdealData")
+	public void snapdealFlow(String email,String password, String confirmPassword,String mobileNumber,String result){
 		boolean isTestSuccess = false;
+		//createDriver(BuyItem.BROWSER);
 		try{
 			loadUrl(BuyItem.URL);
 			
@@ -120,7 +123,7 @@ public class SnapDealPurchase {
 	}
 	
 	
-	@After
+	@AfterMethod
 	public void closeSnapdealDriver(){
 		closeDriver();
 	}
