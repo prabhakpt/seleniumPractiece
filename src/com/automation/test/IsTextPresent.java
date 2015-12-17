@@ -13,7 +13,7 @@ public class IsTextPresent {
 	
 	@Before
 	public void createDriever(){
-		driver = events.createDriver("firefox");
+		driver = BrowserEvents.createDriver("firefox");
 	}
 	
 	@Test
@@ -28,6 +28,6 @@ public class IsTextPresent {
 	
 	@After
 	public void closeDriver(){
-		events.closeDriver();
+		BrowserEvents.closeDriver();
 	}
 }

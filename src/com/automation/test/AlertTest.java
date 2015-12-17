@@ -11,11 +11,9 @@ import com.automation.utilities.BrowserEvents;
 public class AlertTest {
 	WebDriver driver;
 	
-	BrowserEvents browserEventUtilities = new BrowserEvents();
-
 	@Before
 	public void initiateDriver(){
-		driver = browserEventUtilities.createDriver("firefox");
+		driver = BrowserEvents.createDriver("firefox");
 	}
 	
 	@Test
@@ -36,6 +34,6 @@ public class AlertTest {
 	
 	@After
 	public void closeDriver(){
-		browserEventUtilities.closeDriver();
+		BrowserEvents.closeDriver();
 	}
 }

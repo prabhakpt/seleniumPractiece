@@ -23,15 +23,29 @@ import com.framework.datadriven.snapdeal.pojo.SnapdealUser;
 public class ReadAndWriteToExcelUsingPOI {
 	static HSSFWorkbook workBook = null;
 	static InputStream file;
+	static FileInputStream inputStream;
 	StringBuilder filePath = new StringBuilder();
 	
 	//filePath. "E:/automation/docs/testingResults/";
-	
 	public ReadAndWriteToExcelUsingPOI(String filePath){
 		this.filePath.append("E:/automation/docs/testingResults/");
 		this.filePath.append(filePath);
 		this.filePath.append(".xls");
 		System.out.println("final filepath is:"+this.filePath.toString());
+	}
+	
+	// create instance to Excel file available in project folder
+	public static void readProjectInnerFile(){
+		String currentFilePath = System.getProperty("user.dir");
+		System.out.println("current folder path is"+currentFilePath+"/excel_files/gmail_user.xls");
+		File file = new File(currentFilePath + "/excel_files/gmail_user.xls");
+		try {
+			inputStream = new FileInputStream(file);
+			workBook = new HSSFWorkbook(inputStream);
+			System.out.println("work book object"+workBook);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void createWorkBook(){
@@ -86,8 +100,8 @@ public class ReadAndWriteToExcelUsingPOI {
 	
 	public static void updateDataWithTestCaseResults(String ClassName,String status){
 		try {
-			/*InputStream file = new FileInputStream(new File("E:/automation/docs/testingResults/output.xls"));
-			HSSFWorkbook workBook = new HSSFWorkbook(file);*/
+			InputStream file = new FileInputStream(new File("E:/automation/docs/testingResults/output.xls"));
+			HSSFWorkbook workBook = new HSSFWorkbook(file);
 			int sheetsCount = workBook.getNumberOfSheets();
 			for (int sheetIndex = 0; sheetIndex < sheetsCount; sheetIndex++) {
 

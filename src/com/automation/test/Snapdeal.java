@@ -21,7 +21,7 @@ public class Snapdeal {
 	
 	@Before
 	public void createDriever(){
-		driver = events.createDriver("firefox");
+		driver = BrowserEvents.createDriver("firefox");
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class Snapdeal {
 			// click on the element
 			driver.findElement(By.linkText("Transcend H3P 2 TB External Hard Disk")).click();*/
 			
-			driver.findElement(By.xpath("//div[@id='719479349']/div/div[2]/div[3]/a/p")).click();
+			driver.findElement(By.xpath("//div[@id='2025234329']/div/div[2]/div/div/a/img")).click();
 			Thread.sleep(3000);
 			
 			//String productOverviewName = driver.findElement(By.xpath("//div[@id='productOverview']/div[2]/div/div/div/h1")).getText();
@@ -133,6 +133,6 @@ public class Snapdeal {
 	
 	@After
 	public void closeDriver(){
-		events.closeDriver();
+		BrowserEvents.closeDriver();
 	}
 }

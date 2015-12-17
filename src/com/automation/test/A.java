@@ -19,7 +19,10 @@ public class A {
   Thread.sleep(5000);
   driver.switchTo().frame(2);
   driver.findElement(By.id("input_0")).sendKeys("Ramesh");
+  Thread.sleep(2000);
+  System.out.println("Current url on the page is:"+driver.getCurrentUrl());
+  System.out.println("Current page title is:"+driver.getTitle());
+  Thread.sleep(3000);
+  driver.quit();
  }
-
-
 }

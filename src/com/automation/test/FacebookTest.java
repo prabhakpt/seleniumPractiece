@@ -43,7 +43,7 @@ public class FacebookTest {
 			driver.findElement(By.id("pass")).sendKeys("Prabha4");
 			driver.findElement(By.id("u_0_v")).click();
 			Thread.sleep(3000);
-			Assert.assertFalse(driver.findElement(By.tagName("body")).getText().contains("Please re-enter your password"));
+			Assert.assertFalse(driver.findElement(By.tagName("body")).getText().contains("The password that you've entered is incorrect."));
 			
 			//log out
 			driver.findElement(By.id("pageLoginAnchor")).click();

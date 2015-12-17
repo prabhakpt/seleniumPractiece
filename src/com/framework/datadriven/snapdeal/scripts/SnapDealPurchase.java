@@ -3,7 +3,7 @@ package com.framework.datadriven.snapdeal.scripts;
 import static com.automation.utilities.BrowserEvents.clickByLocator;
 import static com.automation.utilities.BrowserEvents.createDriver;
 import static com.automation.utilities.BrowserEvents.enterText;
-import static com.automation.utilities.BrowserEvents.loadUrl;
+import static com.automation.utilities.BrowserEvents.openUrl;
 import static com.automation.utilities.BrowserEvents.mouseOverByIdentityTypeLocator;
 import static com.automation.utilities.BrowserEvents.takeScreenShotOnfailure;
 import static com.automation.utilities.BrowserEvents.verifyForTagName;
@@ -34,7 +34,6 @@ public class SnapDealPurchase {
 	String password;
 	String confirmPassword;
 	String mobileNumber;
-	static int i=0;
 	String result;
 	
 	public SnapDealPurchase(String email,String password, String confirmPassword,String mobileNumber,String result){
@@ -59,9 +58,9 @@ public class SnapDealPurchase {
 	public void snapdealFlow(){
 		boolean isTestSuccess = false;
 		try{
-			loadUrl(BuyItem.URL);
+			openUrl(BuyItem.URL);
 			
-			mouseOverByIdentityTypeLocator(BuyItem.XPATH_IDENTIFY,BuyItem.COMPUTERS_GAMES);
+			mouseOverByIdentityTypeLocator(BuyItem.COMPUTERS_GAMES[0],BuyItem.COMPUTERS_GAMES[1]);
 			mouseOverByIdentityTypeLocator(BuyItem.XPATH_IDENTIFY,BuyItem.STORAGE);
 			clickByLocator(BuyItem.LINK_IDENTIFY,BuyItem.TB_LINK);
 

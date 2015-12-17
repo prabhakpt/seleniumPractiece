@@ -146,6 +146,11 @@ public class BrowserEvents {
 					return true;
 				}
 			}
+			if(identifyBy.equals("tagName")){
+				if(driver.findElements(By.tagName("body")).size()>0){
+					return true;
+				}
+			}
 		} catch (Exception ex) {
 			System.out.println("Exception occured..");
 			// ex.printStackTrace();
@@ -184,6 +189,8 @@ public class BrowserEvents {
 			webElement = driver.findElement(By.linkText(locator));
 		} else if (identifyBy.equalsIgnoreCase("partialLinkText")) {
 			webElement = driver.findElement(By.partialLinkText(locator));
+		}else if(identifyBy.equalsIgnoreCase("tagName")){
+			webElement = driver.findElement(By.tagName("body"));
 		}
 		return webElement;
 	}
@@ -256,6 +263,10 @@ public class BrowserEvents {
 	public static int getXpahtCount(String xPath) {
 
 		return driver.findElements(By.xpath(xPath)).size();
+	}
+	
+	public static void returnXpathtoClick(){
+		
 	}
 
 	public static void waitForTextPresent(int maxWaitTime, String string)
@@ -352,6 +363,8 @@ public class BrowserEvents {
 				return driver.findElement(By.name(locator));
 			}else if(identifyBy.equalsIgnoreCase("link")){
 				return driver.findElement(By.linkText(locator));
+			}else if(identifyBy.equalsIgnoreCase("partialLinkText")){
+				return driver.findElement(By.partialLinkText(locator));
 			}
 		}catch(Exception ex){
 			System.out.println("Exception occured..");
@@ -484,7 +497,7 @@ public class BrowserEvents {
 		}
 	}
 	
-	public static void loadUrl(String url){
+	public static void openUrl(String url){
 		driver.get(url);
 		try {
 			Thread.sleep(2000);
@@ -507,5 +520,4 @@ public class BrowserEvents {
 	public static void main(String[] args) {
 		System.out.println("pra"+dataTime("MMddhhmmss"));
 	}
-
 }

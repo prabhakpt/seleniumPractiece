@@ -22,7 +22,7 @@ public class FlipkartTest {
 	
 	@Before
 	public void initiateDriver(){
-		driver = driverUtilities.createDriver("firefox");
+		driver = BrowserEvents.createDriver("firefox");
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class FlipkartTest {
 	}
 	
 	@After
-	public void closeDriver(){
-		driverUtilities.closeDriver();
+	public void closeFlipDriver(){
+		BrowserEvents.closeDriver();
 	}
 }

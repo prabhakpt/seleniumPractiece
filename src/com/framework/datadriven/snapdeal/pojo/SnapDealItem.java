@@ -10,7 +10,7 @@ public class SnapDealItem {
 		public static String TAG_NAME = "tagname";
 		
 		// xpaths
-		public static String COMPUTERS_GAMES = "//div[@id='leftNavNemu']/div/div/ul/li[3]/a/span";
+		public static String COMPUTERS_GAMES[] ={"xpath", "//div[@id='leftNavNemu']/div/div/ul/li[3]/a/span"};
 		public static String STORAGE= "//div[@id='leftNavNemu']/div/div/ul/li[3]/div/ul/li[3]/a/span";
 		public static String TB_DEVICE = "//div[@id='2025234329']/div/div[2]/div/div/a/img";
 		public static String CLOSE_CART = "//div[2]/div/div/div[2]/span/i";
